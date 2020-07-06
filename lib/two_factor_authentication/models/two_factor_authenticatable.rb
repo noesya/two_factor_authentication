@@ -122,7 +122,7 @@ module Devise
         end
 
         def clear_direct_otp
-          update_attributes(direct_otp: nil, direct_otp_sent_at: nil)
+          update_columns(direct_otp: nil, direct_otp_sent_at: nil)
         end
       end
 
