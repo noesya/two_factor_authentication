@@ -18,7 +18,8 @@ class Devise::TwoFactorAuthenticationController < DeviseController
   end
 
   def resend_code
-    resource.send_new_otp
+    delivery_method = params.dig(:delivery_method)&.to_sym || :sms
+    resource.send_new_otp({ delivery_method: delivery_method })
     redirect_to send("#{resource_name}_two_factor_authentication_path"), notice: I18n.t('devise.two_factor_authentication.code_has_been_sent')
   end
 
