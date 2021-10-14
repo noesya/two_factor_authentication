@@ -69,7 +69,7 @@ module Devise
           !totp_enabled?
         end
 
-        def send_two_factor_authentication_code(code)
+        def send_two_factor_authentication_code(code, options = {})
           raise NotImplementedError.new("No default implementation - please define in your class.")
         end
 
