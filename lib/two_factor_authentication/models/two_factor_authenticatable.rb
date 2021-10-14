@@ -61,6 +61,8 @@ module Devise
         end
 
         def send_new_otp(options = {})
+          return if respond_to?(:access_locked?) && access_locked?
+
           create_direct_otp options
           send_two_factor_authentication_code(direct_otp, options)
         end
