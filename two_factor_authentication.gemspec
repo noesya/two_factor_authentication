@@ -35,4 +35,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '~> 2.5'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'timecop'
+
+  s.post_install_message = "Updating to Two Factor Authentication v3.X.X introduces a breaking change. Refer to ReadMe file."
 end

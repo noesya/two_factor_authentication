@@ -4,7 +4,7 @@ class GuestUser
   include Devise::Models::TwoFactorAuthenticatable
 
   define_model_callbacks :create
-  attr_accessor :direct_otp, :direct_otp_sent_at, :otp_secret_key, :email,
+  attr_accessor :direct_otp, :direct_otp_sent_at, :direct_otp_delivery_method, :otp_secret_key, :email,
     :second_factor_attempts_count, :totp_timestamp
 
   def update_attributes(attrs)

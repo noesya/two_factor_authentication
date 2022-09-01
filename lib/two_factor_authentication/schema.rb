@@ -24,6 +24,10 @@ module TwoFactorAuthentication
       apply_devise_schema :direct_otp_sent_at, DateTime
     end
 
+    def direct_otp_delivery_method
+      apply_devise_schema :direct_otp_delivery_method, String
+    end
+
     def totp_timestamp
       apply_devise_schema :totp_timestamp, Timestamp
     end

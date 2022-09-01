@@ -49,6 +49,7 @@ module AuthenticatedModelHelper
           t.string    'otp_secret_key'
           t.string    'direct_otp'
           t.datetime  'direct_otp_sent_at'
+          t.string  'direct_otp_delivery_method'
           t.timestamp 'totp_timestamp'
         end
       end

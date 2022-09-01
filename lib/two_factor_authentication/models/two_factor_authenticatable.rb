@@ -62,16 +62,17 @@ module Devise
 
         def send_new_otp(options = {})
           return if max_login_attempts? || (respond_to?(:access_locked?) && access_locked?)
+          options[:delivery_method] = :mobile_phone if options.dig(:delivery_method).blank?
 
           create_direct_otp options
-          send_two_factor_authentication_code(direct_otp, options)
+          send_two_factor_authentication_code(direct_otp, options[:delivery_method])
         end
 
         def send_new_otp_after_login?
           !totp_enabled?
         end
 
-        def send_two_factor_authentication_code(code, options = {})
+        def send_two_factor_authentication_code(code, delivery_method)
           raise NotImplementedError.new("No default implementation - please define in your class.")
         end
 
@@ -103,9 +104,11 @@ module Devise
         def create_direct_otp(options = {})
           # Create a new random OTP and store it in the database
           digits = options[:length] || self.class.direct_otp_length || 6
+          byebug
           update_columns(
             direct_otp: random_base10(digits),
-            direct_otp_sent_at: Time.now.utc
+            direct_otp_sent_at: Time.now.utc,
+            direct_otp_delivery_method: options.dig(:delivery_method)
           )
         end
 
@@ -124,7 +127,7 @@ module Devise
         end
 
         def clear_direct_otp
-          update_columns(direct_otp: nil, direct_otp_sent_at: nil)
+          update_columns(direct_otp: nil, direct_otp_sent_at: nil, direct_otp_delivery_method: nil)
         end
       end
 
