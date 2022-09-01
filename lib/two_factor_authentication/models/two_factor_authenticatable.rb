@@ -104,7 +104,6 @@ module Devise
         def create_direct_otp(options = {})
           # Create a new random OTP and store it in the database
           digits = options[:length] || self.class.direct_otp_length || 6
-          byebug
           update_columns(
             direct_otp: random_base10(digits),
             direct_otp_sent_at: Time.now.utc,
