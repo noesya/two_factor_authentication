@@ -201,12 +201,11 @@ The following database fields are new in version 2.
 
 - `direct_otp`
 - `direct_otp_sent_at`
-- `direct_otp_delivery_method`
 - `totp_timestamp`
 
 To add them, generate a migration such as:
 
-    $ rails g migration AddTwoFactorFieldsToUsers direct_otp:string direct_otp_sent_at:datetime direct_otp_delivery_method: string totp_timestamp:timestamp
+    $ rails g migration AddTwoFactorFieldsToUsers direct_otp:string direct_otp_sent_at:datetime totp_timestamp:timestamp
 
 The `otp_secret_key` is only required for users who use TOTP (Google Authenticator) codes,
 so unless it has been shared with the user it should be set to `nil`.  The
@@ -229,9 +228,17 @@ The following database fields are new in version 3.
 
 To add them, generate a migration such as:
 
-    $ rails g migration AddTwoFactorFieldsToUsers direct_otp_delivery_method:string
+    $ rails g migration AddTwoFactorDeliveryMethodToUsers direct_otp_delivery_method:string
 
 Also the method `send_two_factor_authentication_code(code, options = {})` has changed to `send_two_factor_authentication_code(code, delivery_method)`
+
+If your default delivery method is not `:mobile_phone` and/or that you need a conditional fallback, override the `direct_otp_default_delivery_method` method to add your custom logic.
+
+```ruby
+def direct_otp_default_delivery_method
+  mobile_phone.present? ? :mobile_phone : :email
+end
+```
 
 #### Adding the TOTP encryption option to an existing app
 
