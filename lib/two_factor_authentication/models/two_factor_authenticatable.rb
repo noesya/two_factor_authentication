@@ -60,9 +60,13 @@ module Devise
           true
         end
 
+        def direct_otp_default_delivery_method
+          :mobile_phone
+        end
+
         def send_new_otp(options = {})
           return if max_login_attempts? || (respond_to?(:access_locked?) && access_locked?)
-          options[:delivery_method] = :mobile_phone if options.dig(:delivery_method).blank?
+          options[:delivery_method] = direct_otp_default_delivery_method if options.dig(:delivery_method).blank?
 
           create_direct_otp options
           send_two_factor_authentication_code(direct_otp, options[:delivery_method])
