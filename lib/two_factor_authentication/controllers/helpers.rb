@@ -43,7 +43,7 @@ module TwoFactorAuthentication
         return unless signed_in? && resource.need_two_factor_authentication?(request)
         warden.cookies.delete TwoFactorAuthentication::REMEMBER_TFA_COOKIE_NAME
         warden.session(resource_name)[TwoFactorAuthentication::NEED_AUTHENTICATION] = true
-        resource.send_new_otp
+        resource.send_new_otp(request)
       end
 
     end

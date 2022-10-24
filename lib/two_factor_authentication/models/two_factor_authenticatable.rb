@@ -64,7 +64,7 @@ module Devise
           :mobile_phone
         end
 
-        def send_new_otp(options = {})
+        def send_new_otp(request, options = {})
           return if max_login_attempts? || (respond_to?(:access_locked?) && access_locked?)
           options[:delivery_method] = direct_otp_default_delivery_method if options.dig(:delivery_method).blank?
 

@@ -138,7 +138,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # Unfortunately, signing up doesn't call warden.authenticate! like sign in so we must set it manually here.
     super
     if warden.session(resource_name)[TwoFactorAuthentication::NEED_AUTHENTICATION] = resource.need_two_factor_authentication?(warden.request)
-      resource.send_new_otp if resource.send_new_otp_after_login?
+      resource.send_new_otp(warden.request) if resource.send_new_otp_after_login?
     end
   end
 end
@@ -237,6 +237,36 @@ If your default delivery method is not `:mobile_phone` and/or that you need a co
 ```ruby
 def direct_otp_default_delivery_method
   mobile_phone.present? ? :mobile_phone : :email
+end
+```
+
+#### Upgrading from version 3.X to 4.X
+
+In version 4, the two-factor authenticable model's `send_new_otp` method takes the ActionDispatch::Request as first parameter.
+
+It allows to handle different situations depending on the request (the host for example)
+
+```ruby
+def send_new_otp(request, options = {})
+  # host = request.host
+  # ...
+  super
+end
+```
+
+If you override the method in your controllers, make sure to pass the request as first parameter.
+
+```ruby
+class Users::RegistrationsController < Devise::RegistrationsController
+
+  protected
+
+  def sign_up(resource_name, resource)
+    super
+    if warden.session(resource_name)[TwoFactorAuthentication::NEED_AUTHENTICATION] = resource.need_two_factor_authentication?(warden.request)
+      resource.send_new_otp(warden.request) if resource.send_new_otp_after_login?
+    end
+  end
 end
 ```
 
