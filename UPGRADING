@@ -1,5 +1,6 @@
 ###################################
-#  NOTE FOR UPGRADING TO 4.x.x  #
+#  two_factor_authentication gem  #
+#   NOTE FOR UPGRADING TO 4.x.x   #
 ###################################
 
 In version 4, the two-factor authenticable model's `send_new_otp` method takes the ActionDispatch::Request as first parameter.
