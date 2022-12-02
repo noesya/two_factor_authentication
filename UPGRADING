@@ -1,0 +1,8 @@
+###################################
+#  NOTE FOR UPGRADING TO 4.x.x  #
+###################################
+
+In version 4, the two-factor authenticable model's `send_new_otp` method takes the ActionDispatch::Request as first parameter.
+
+For more details, check the README:
+https://github.com/noesya/two_factor_authentication/blob/master/README.md#upgrading-from-version-3x-to-4x
